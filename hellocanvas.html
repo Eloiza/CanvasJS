@@ -12,9 +12,10 @@
 
 		//armazena dois vetores com as coordenadas de inicio e fim da linha 
 		class line{
-			constructor(p_ini, p_end){
+			constructor(p_ini, p_end, width){
 				this.ini = p_ini;
 				this.end = p_end;
+				this.width = width;
 			}
 		}
 
@@ -31,7 +32,7 @@
 		var ctx = canvas.getContext("2d");
 
 		//configurando aparencia da reta
-		ctx.lineWidth = 5;
+		ctx.lineWidth = 10;
 		ctx.lineCap = 'round';
 		ctx.strokeStyle = 'green';
 
@@ -45,7 +46,7 @@
 		let coord_end = new coord(200, 100);
 
 		//instanciando objeto do tipo linha
-		line_0 = new line(coord_ini, coord_end);
+		line_0 = new line(coord_ini, coord_end, 10);
 
 		//inicializa coordenadas do mouse
 		mouse_coord = new coord(0,0);
@@ -63,15 +64,36 @@
 
 		//verifica se o clique do mouse convergiu com algum elemento
 		function colide(event){
-			alert(line_0.ini.x)
-			alert(line_0.ini.y)
-			alert(line_0.end.x)
-			alert(line_0.end.y)
+			alert("TO NO COLIDE")
+
+			var a,b,c,i,resultado, colide;
+
+			colide = 0;
+			//checa "retas paralelas" a equacao da reta entre os pontos
+			for (i = -line_0.width + 5; i<line_0.width + 5; i++){
+				//calculando valores da equacao da reta que passa pelo inicio e fim da linha
+				a = (line_0.ini.y + i) - (line_0.end.y + i); 
+				b = (line_0.end.x) - (line_0.ini.x);
+				c = ((line_0.ini.x)* (line_0.end.y + i)) - ((line_0.end.x) *(line_0.ini.y + i));
+
+				//calculando ax + by + c = 0 - com x,y coordenadas do mouse
+				var resultado = mouse_coord.x*a + mouse_coord.y*b + c; 
+				if(resultado == 0){
+					alert("COLIDIU BIXO");
+					colide = 1;
+					break;	
+				}
+
+			}
+
+			alert("Resultado colide: " + colide)
+			return colide;
 
 		}
 
 		//verifica se um elemento foi selecionado pelo clique
 		function select(event){
+			// alert("CLICOU")
 			getPosition(event);	//verifica posicao do mouse
 			colide(event);
 
