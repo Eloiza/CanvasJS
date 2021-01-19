@@ -64,29 +64,20 @@
 
 		//verifica se o clique do mouse convergiu com algum elemento
 		function colide(event){
-			alert("TO NO COLIDE")
-
 			var a,b,c,i,resultado, colide;
 
-			colide = 0;
-			//checa "retas paralelas" a equacao da reta entre os pontos
-			for (i = -line_0.width + 5; i<line_0.width + 5; i++){
-				//calculando valores da equacao da reta que passa pelo inicio e fim da linha
-				a = (line_0.ini.y + i) - (line_0.end.y + i); 
-				b = (line_0.end.x) - (line_0.ini.x);
-				c = ((line_0.ini.x)* (line_0.end.y + i)) - ((line_0.end.x) *(line_0.ini.y + i));
-
-				//calculando ax + by + c = 0 - com x,y coordenadas do mouse
-				var resultado = mouse_coord.x*a + mouse_coord.y*b + c; 
-				if(resultado == 0){
-					alert("COLIDIU BIXO");
-					colide = 1;
-					break;	
+			if(ctx.isPointInStroke(mouse_coord.x, mouse_coord.y)){
+				//se cor igual verde
+				if(ctx.strokeStyle == '#008000'){
+					ctx.strokeStyle = "blue";
 				}
-
+				else{
+					ctx.strokeStyle = "green";
+				}
+				ctx.stroke();
+				colide = 1;				
 			}
 
-			alert("Resultado colide: " + colide)
 			return colide;
 
 		}
@@ -111,6 +102,7 @@
 			// 	}
 			// }
 		}
+
 
 		function drag_line(){
 
