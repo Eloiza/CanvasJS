@@ -8,130 +8,57 @@
 	<h1>My First Canvas</h1>
 	<canvas id="myCanvas" width="400" height="300" style="border:1px solid #000000;"></canvas>
 
-	<p>Coordenadas gravadas</p>
-	<p id="demo"></p>
-
 	<script>
 
-		//window.addEventListener('load', ()=>{
-			// canvas.addEventListener("mousedown",startPainting);
-			// canvas.addEventListener("mouseup",stopPainting);
-			// canvas.addEventListener("mousemove",sketch);
-			//canvas.addEventListener("mousedown",teste);
-			// canvas.addEventListener("mousemove",sketch);
-
-
-	//	});
-
-		const canvas = document.getElementById("myCanvas");
-		var ctx = canvas.getContext("2d");
-
-		// let coord = {x:0, y:0};
-		// let paint = false;
-
-		// function teste(event){
-		// 	//clique com o botao esquerdo
-		// 	if(event.button == 0){
-		// 		alert("Dedo no cu")
-		// 	}
-
-		// 	//caso clique com o botao direito
-		// 	else if(event.button == 2){
-		// 		alert("e gritaria")
-
-		// 	}
-		// }
-
-		var x = canvas.width/2;
-		var y = canvas.height-30;
-		var dx = 2;
-		var dy = -2;
-
-		function drawBall(){
-			ctx.beginPath();
-			ctx.arc(x, y, 10, 0, Math.PI*2);
-			ctx.fillStyle = "#0095DD";
-			ctx.fill();
-			ctx.closePath();
-			ctx.stroke()
+		//armazena dois vetores com as coordenadas de inicio e fim da linha 
+		class line{
+			constructor(p_ini, p_end){
+				this.ini = p_ini
+				this.end = p_end
+			}
 		}
 
-		function draw(){
-		    ctx.clearRect(0, 0, canvas.width, canvas.height);
-		    drawBall();
-			x+= dx;
-			y+= dy;
-
-		}
-		setInverval(draw,10);
-		// function getPosition(event){
-		// 	coord.x = event.clientX - canvas.offsetLeft;
-		// 	coord.y = event.clientY - canvas.offsetTop;
-		// }
-
-		// function startPainting(event){
-		// 	paint = true;
-		// 	getPosition(event);
-		// }
-
-		// function stopPainting(){
-		// 	paint = false;
-		// }
-
-		// function sketch(event){
-		// 	if(!paint) return;
-		// 	ctx.beginPath()
-		// 	ctx.lineWidth = 5;
-
-		// 	ctx.lineCap = 'round';
-		// 	ctx.strokeStyle = 'green';
-
-		// 	ctx.moveTo(coord.x, coord.y);
-		// 	getPosition(event);
-		// 	ctx.lineTo(coord.x, coord.y);
-
-		// 	ctx.stroke();
-		// }
-	</script>
-	<!-- Desenhando um retangulo no canvas -->
-<!-- 	<script>
-		//find canvas
 		var canvas = document.getElementById("myCanvas");
-
-		//create a drawing object
 		var ctx = canvas.getContext("2d");
 
-		//drawing it on the canvas
-		ctx.fillStyle = "#FF0000";
+		//configurando aparencia da reta
+		ctx.lineWidth = 5;
+		ctx.lineCap = 'round';
+		ctx.strokeStyle = 'green';
 
-		//comencando de 0,0 desenhe um retangulo de 150x75 pixels
-		ctx.fillRect(0,0,150,75);
-	</script>
- -->
-	<!-- Desenhando uma linha no canvas -->
-<!-- 	<script>
-		//find canvas
-		var canvas = document.getElementById("myCanvas");
-
-		//create a drawing object
-		var ctx = canvas.getContext("2d");
-
-		ctx.moveTo(0,0);
+		//Desenhando uma linha no canvas
+		ctx.moveTo(50,50);
 		ctx.lineTo(200,100);
 		ctx.stroke();
 
-	</script>-->
+		let coord_ini = {x:50, y:50};
+		let coord_end = {x:200, y:100};
 
-	<!--
-	<script>
-		document.getElementById("myCanvas").addEventListener("click", function(){alert("Nao me clica nao rapaz!")})
+		line_0 = new line(coord_ini, coord_end);
 
-		// document.getElementById("myDIV").addEventListener("mousemove", myFunction);
+		alert(line_0.ini)
+		alert(line_0.end)
 
-		// function myFunction() {
-		//   document.getElementById("demo").innerHTML = Math.random();
-		// }
+		window.addEventListener('load', ()=>{
+			canvas.addEventListener("mousedown",select);
+		});
 
-	</script> -->
+		function getPosition(event){
+			coord.x = event.clientX - canvas.offsetLeft;
+			coord.y = event.clientY - canvas.offsetTop;
+		}
+
+		//verifica se o clique do mouse convergiu com algum elemento
+		function colide(event){
+
+		}
+
+		//verifica se um elemento foi selecionado pelo clique
+		function select(event){
+			if(colide(event, elemento))
+		}
+
+	</script>
+
 </body>
 </html>
