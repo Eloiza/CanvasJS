@@ -50,10 +50,15 @@
 
 		//inicializa coordenadas do mouse
 		mouse_coord = new coord(0,0);
+		mouse_start = new coord(0,0);
+
+		selected = 0;
 
 		//adicionando evento ao clicar na tela
 		window.addEventListener('load', ()=>{
 			canvas.addEventListener("mousedown",select);
+			canvas.addEventListener("mouseup",unselect);
+			canvas.addEventListener("mousemove",drag_line);
 		});
 
 		//atualiza posicao do ponteiro do mouse
@@ -62,10 +67,9 @@
 			mouse_coord.y = event.clientY - canvas.offsetTop;
 		}
 
-		//verifica se o clique do mouse convergiu com algum elemento
-		function colide(event){
-			var a,b,c,i,resultado, colide;
-
+		//verifica se um elemento foi selecionado pelo clique
+		function select(event){
+			getPosition(event);
 			if(ctx.isPointInStroke(mouse_coord.x, mouse_coord.y)){
 				//se cor igual verde
 				if(ctx.strokeStyle == '#008000'){
@@ -75,43 +79,46 @@
 					ctx.strokeStyle = "green";
 				}
 				ctx.stroke();
-				colide = 1;				
+				selected = 1;				
 			}
+		}
 
-			return colide;
+		function draw(){
+			ctx.clearRect(0,0,canvas.width, canvas.height);
+			ctx.moveTo(line_0.ini.x,line_0.ini.y);
+			ctx.lineTo(line_0.end.x,line_0.end.y);
+			ctx.stroke();
 
 		}
 
-		//verifica se um elemento foi selecionado pelo clique
-		function select(event){
-			// alert("CLICOU")
-			getPosition(event);	//verifica posicao do mouse
-			colide(event);
+		function drag_line(event){
+			if(selected){
+				event.preventDefault();
+				event.stopPropagation();
+				
+				getPosition(event);
+				var dx = mouse_coord.x - mouse_start.x;
+				var dy = mouse_coord.y - mouse_start.y;
 
-			// //caso clicou na "area" da linha 0 
-			// if(colide(event, line_0)){
+				mouse_start.x = mouse_coord.x;
+				mouse_start.y = mouse_coord.y;
 
-			// 	//caso clicou no centro da reta
-			// 	if(centro){
-			// 		drag_line();
-			// 	}
+				// alert(event.offsetX);	
+				line_0.ini.x += dx;
+				line_0.ini.y += dy;
 
-			// 	//caso clicou nas bordas
-			// 	else if(bordas){
-			// 		edit_line();
-			// 	}
-			// }
+				line_0.end.x += dx;
+				line_0.end.y += dy;
+
+
+				draw()
+
+			}
 		}
 
-
-		function drag_line(){
-
+		function unselect(event){
+			selected = 0;
 		}
-
-		function edit_line(){
-
-		}
-
 
 	</script>
 
