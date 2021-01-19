@@ -13,11 +13,20 @@
 		//armazena dois vetores com as coordenadas de inicio e fim da linha 
 		class line{
 			constructor(p_ini, p_end){
-				this.ini = p_ini
-				this.end = p_end
+				this.ini = p_ini;
+				this.end = p_end;
 			}
 		}
 
+		//armazena uma coordenada em um plano 2d
+		class coord{
+			constructor(x,y){
+				this.x = x;
+				this.y = y;
+			}
+		}
+
+		//inicializando canvas do JS
 		var canvas = document.getElementById("myCanvas");
 		var ctx = canvas.getContext("2d");
 
@@ -31,32 +40,64 @@
 		ctx.lineTo(200,100);
 		ctx.stroke();
 
-		let coord_ini = {x:50, y:50};
-		let coord_end = {x:200, y:100};
+		//instanciando coordenadas da linha
+		let coord_ini = new coord(50, 50);
+		let coord_end = new coord(200, 100);
 
+		//instanciando objeto do tipo linha
 		line_0 = new line(coord_ini, coord_end);
 
-		alert(line_0.ini)
-		alert(line_0.end)
+		//inicializa coordenadas do mouse
+		mouse_coord = new coord(0,0);
 
+		//adicionando evento ao clicar na tela
 		window.addEventListener('load', ()=>{
 			canvas.addEventListener("mousedown",select);
 		});
 
+		//atualiza posicao do ponteiro do mouse
 		function getPosition(event){
-			coord.x = event.clientX - canvas.offsetLeft;
-			coord.y = event.clientY - canvas.offsetTop;
+			mouse_coord.x = event.clientX - canvas.offsetLeft;
+			mouse_coord.y = event.clientY - canvas.offsetTop;
 		}
 
 		//verifica se o clique do mouse convergiu com algum elemento
 		function colide(event){
+			alert(line_0.ini.x)
+			alert(line_0.ini.y)
+			alert(line_0.end.x)
+			alert(line_0.end.y)
 
 		}
 
 		//verifica se um elemento foi selecionado pelo clique
 		function select(event){
-			if(colide(event, elemento))
+			getPosition(event);	//verifica posicao do mouse
+			colide(event);
+
+			// //caso clicou na "area" da linha 0 
+			// if(colide(event, line_0)){
+
+			// 	//caso clicou no centro da reta
+			// 	if(centro){
+			// 		drag_line();
+			// 	}
+
+			// 	//caso clicou nas bordas
+			// 	else if(bordas){
+			// 		edit_line();
+			// 	}
+			// }
 		}
+
+		function drag_line(){
+
+		}
+
+		function edit_line(){
+
+		}
+
 
 	</script>
 
