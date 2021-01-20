@@ -128,6 +128,7 @@
 
 			return dist;
 		}
+		
 		function move_line(event){
 			if(selected){
 				getPosition(event);
@@ -144,53 +145,47 @@
 				var dist_m = distance(m_point, mouse_coord);
 
 
-				// //clique proximo ao inicio da reta
-				// if(dist_a < dist_b & dist_a < dist_m){
-				// 	line_0.ini.x = mouse_coord.x;
-				// 	line_0.ini.y = mouse_coord.y;				
-				// 	draw();
-				// }
+				//clique proximo ao inicio da reta
+				if(dist_a < dist_b & dist_a < dist_m){
+					line_0.ini.x = mouse_coord.x;
+					line_0.ini.y = mouse_coord.y;				
+					draw();
+				}
 
-				// // clique proximo ao fim da reta
-				// else if(dist_b < dist_a & dist_b < dist_m){
-				// 	line_0.end.x = mouse_coord.x;
-				// 	line_0.end.y = mouse_coord.y;				
-				// 	draw();
-				// }
+				// clique proximo ao fim da reta
+				else if(dist_b < dist_a & dist_b < dist_m){
+					line_0.end.x = mouse_coord.x;
+					line_0.end.y = mouse_coord.y;				
+					draw();
+				}
 
 				// clique no meio da reta
-				// else if(dist_m < dist_a & dist_m < dist_b){
-					var dx = mouse_coord.x - mouse_start.x;
-					var dy = mouse_coord.y - mouse_start.y;
+				else if(dist_m < dist_a & dist_m < dist_b){
 
-
-					var x_dist = m_point.x - line_0.ini.x;
-					var y_dist = m_point.y - line_0.ini.y;
+					
+					//salva "distancia" ponto medio com relacao aos outros pontos
+					var x_dist_ini = m_point.x - line_0.ini.x;
+					var y_dist_ini = m_point.y - line_0.ini.y;
 
 
 					var x_dist_end = line_0.end.x - m_point.x;
 					var y_dist_end = line_0.end.y - m_point.y;
 
 					//atualiza ponto medio da reta
-					m_point.x += dx;
-					m_point.y += dy;
+					m_point.x = mouse_coord.x;
+					m_point.y = mouse_coord.y;
 
 					//atualiza posicao inicial do mouse
 					mouse_start.x = mouse_coord.x;
 					mouse_start.y = mouse_coord.y;
 
-					line_0.ini.x = m_point.x - x_dist;
-					line_0.ini.y = m_point.y - y_dist;
+					//atualiza posição da reta
+					line_0.ini.x = m_point.x - x_dist_ini;
+					line_0.ini.y = m_point.y - y_dist_ini;
 
 					line_0.end.x = m_point.x + x_dist_end;
 					line_0.end.y = m_point.y + y_dist_end;
 
-
-					// line_0.ini.x += dx;
-					// line_0.ini.y += dy;
-
-					// line_0.end.x += dx;
-					// line_0.end.y += dy;
 
 					draw();
 
@@ -198,6 +193,7 @@
 				}
 
 			}
+		}
 	</script>
 
 </body>
