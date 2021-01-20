@@ -56,9 +56,9 @@
 
 		//adicionando evento ao clicar na tela
 		window.addEventListener('load', ()=>{
-			canvas.addEventListener("mousedown",select);
-			canvas.addEventListener("mouseup",unselect);
-			canvas.addEventListener("mousemove",drag_line);
+			canvas.addEventListener("mousedown", select);
+			canvas.addEventListener("mouseup", unselect);
+			canvas.addEventListener("mousemove", move_line);
 		});
 
 		//atualiza posicao do ponteiro do mouse
@@ -85,6 +85,7 @@
 
 		function draw(){
 			ctx.clearRect(0,0,canvas.width, canvas.height);
+			ctx.beginPath(); //resseta o caminho salvo em ctx
 			ctx.moveTo(line_0.ini.x,line_0.ini.y);
 			ctx.lineTo(line_0.end.x,line_0.end.y);
 			ctx.stroke();
@@ -111,7 +112,7 @@
 				line_0.end.y += dy;
 
 
-				draw()
+				draw();
 
 			}
 		}
@@ -120,6 +121,46 @@
 			selected = 0;
 		}
 
+		//calcula a distancia entre o ponto a e b
+		function distance(a, b){
+			dist = Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2);
+			dist = Math.sqrt(dist);
+
+			return dist;
+		}
+		function move_line(event){
+			if(selected){
+				getPosition(event);
+
+				//checar qual ponto esta mais perto
+				//distancia ponto inicial ao ponto do clique
+				dist_a = distance(line_0.ini, mouse_coord); 
+
+				//distancia ponto inicial ao ponto do clique
+				dist_b = distance(line_0.end, mouse_coord);
+
+				m_point = new coord( (line_0.ini.x + line_0.end.x)/2, (line_0.ini.y + line_0.end.y)/2 )
+				//distancia ponto inicial ao ponto do clique
+				dist_m = distance(m_point, mouse_coord);
+
+
+				//clique proximo ao inicio da reta
+				if(dist_a < dist_b & dist_a < dist_m){
+					line_0.ini.x = mouse_coord.x;
+					line_0.ini.y = mouse_coord.y;				
+					draw();
+				}
+
+				//clique proximo ao fim da reta
+				if(dist_b < dist_a & dist_b < dist_m){
+					line_0.end.x = mouse_coord.x;
+					line_0.end.y = mouse_coord.y;				
+					draw();
+				}
+
+
+			}
+		}
 	</script>
 
 </body>
