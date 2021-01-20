@@ -134,33 +134,70 @@
 
 				//checar qual ponto esta mais perto
 				//distancia ponto inicial ao ponto do clique
-				dist_a = distance(line_0.ini, mouse_coord); 
+				var dist_a = distance(line_0.ini, mouse_coord); 
 
 				//distancia ponto inicial ao ponto do clique
-				dist_b = distance(line_0.end, mouse_coord);
+				var dist_b = distance(line_0.end, mouse_coord);
 
-				m_point = new coord( (line_0.ini.x + line_0.end.x)/2, (line_0.ini.y + line_0.end.y)/2 )
+				var m_point = new coord( (line_0.ini.x + line_0.end.x)/2, (line_0.ini.y + line_0.end.y)/2 )
 				//distancia ponto inicial ao ponto do clique
-				dist_m = distance(m_point, mouse_coord);
+				var dist_m = distance(m_point, mouse_coord);
 
 
-				//clique proximo ao inicio da reta
-				if(dist_a < dist_b & dist_a < dist_m){
-					line_0.ini.x = mouse_coord.x;
-					line_0.ini.y = mouse_coord.y;				
+				// //clique proximo ao inicio da reta
+				// if(dist_a < dist_b & dist_a < dist_m){
+				// 	line_0.ini.x = mouse_coord.x;
+				// 	line_0.ini.y = mouse_coord.y;				
+				// 	draw();
+				// }
+
+				// // clique proximo ao fim da reta
+				// else if(dist_b < dist_a & dist_b < dist_m){
+				// 	line_0.end.x = mouse_coord.x;
+				// 	line_0.end.y = mouse_coord.y;				
+				// 	draw();
+				// }
+
+				// clique no meio da reta
+				// else if(dist_m < dist_a & dist_m < dist_b){
+					var dx = mouse_coord.x - mouse_start.x;
+					var dy = mouse_coord.y - mouse_start.y;
+
+
+					var x_dist = m_point.x - line_0.ini.x;
+					var y_dist = m_point.y - line_0.ini.y;
+
+
+					var x_dist_end = line_0.end.x - m_point.x;
+					var y_dist_end = line_0.end.y - m_point.y;
+
+					//atualiza ponto medio da reta
+					m_point.x += dx;
+					m_point.y += dy;
+
+					//atualiza posicao inicial do mouse
+					mouse_start.x = mouse_coord.x;
+					mouse_start.y = mouse_coord.y;
+
+					line_0.ini.x = m_point.x - x_dist;
+					line_0.ini.y = m_point.y - y_dist;
+
+					line_0.end.x = m_point.x + x_dist_end;
+					line_0.end.y = m_point.y + y_dist_end;
+
+
+					// line_0.ini.x += dx;
+					// line_0.ini.y += dy;
+
+					// line_0.end.x += dx;
+					// line_0.end.y += dy;
+
 					draw();
-				}
 
-				//clique proximo ao fim da reta
-				if(dist_b < dist_a & dist_b < dist_m){
-					line_0.end.x = mouse_coord.x;
-					line_0.end.y = mouse_coord.y;				
-					draw();
-				}
 
+				}
 
 			}
-		}
 	</script>
 
 </body>
