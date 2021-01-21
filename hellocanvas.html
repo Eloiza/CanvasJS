@@ -6,17 +6,30 @@
  -->
 <body>
 	<h1>My First Canvas</h1>
-	<canvas id="myCanvas" width="400" height="300" style="border:1px solid #000000;"></canvas>
+	<canvas id="myCanvas" width="400" height="400" style="border:1px solid #000000;"></canvas>
 
 	<script>
 
 		//armazena dois vetores com as coordenadas de inicio e fim da linha 
 		class line{
-			constructor(p_ini, p_end, width){
+			constructor(p_ini, p_end, path, color){
 				this.ini = p_ini;
 				this.end = p_end;
-				this.width = width;
+				this.path = path;
+				this.color = color;
 			}
+
+			create_path(){
+				this.path = new Path2D();
+				this.path.moveTo(this.ini.x, this.ini.y);
+				this.path.lineTo(this.end.x, this.end.y);
+			}
+
+			// update_path(){
+			// 	this.path.beginPath();
+			// 	this.path.moveTo(this.ini.x, this.ini.y);
+			// 	this.path.lineTo(this.end.x, this.end.y);				
+			// }
 		}
 
 		//armazena uma coordenada em um plano 2d
@@ -31,28 +44,29 @@
 		var canvas = document.getElementById("myCanvas");
 		var ctx = canvas.getContext("2d");
 
-		//configurando aparencia da reta
+		//configurando aparencia das reta
 		ctx.lineWidth = 10;
 		ctx.lineCap = 'round';
 		ctx.strokeStyle = 'green';
 
-		//Desenhando uma linha no canvas
-		ctx.moveTo(50,50);
-		ctx.lineTo(200,100);
-		ctx.stroke();
+		//instanciando objetos do tipo linha
+		var lines = [];
+		lines.push( new line(new coord(200,200), new coord(150,300)) );
+		lines.push( new line(new coord(200,200), new coord(250,300)) );
+		lines.push( new line(new coord(150,300), new coord(250,300)) );
 
-		//instanciando coordenadas da linha
-		let coord_ini = new coord(50, 50);
-		let coord_end = new coord(200, 100);
+		lines[0].create_path();
+		lines[1].create_path();
+		lines[2].create_path();
 
-		//instanciando objeto do tipo linha
-		line_0 = new line(coord_ini, coord_end, 10);
+		draw();
 
 		//inicializa coordenadas do mouse
-		mouse_coord = new coord(0,0);
-		mouse_start = new coord(0,0);
+		var mouse_coord = new coord(0,0);
+		var mouse_start = new coord(0,0);
 
-		selected = 0;
+		var selected = 0;
+		var selected_line = 0;
 
 		//adicionando evento ao clicar na tela
 		window.addEventListener('load', ()=>{
@@ -70,51 +84,34 @@
 		//verifica se um elemento foi selecionado pelo clique
 		function select(event){
 			getPosition(event);
-			if(ctx.isPointInStroke(mouse_coord.x, mouse_coord.y)){
-				//se cor igual verde
-				if(ctx.strokeStyle == '#008000'){
-					ctx.strokeStyle = "blue";
+			for (line of lines){
+				if(ctx.isPointInStroke(line.path, mouse_coord.x, mouse_coord.y)){
+					if(ctx.strokeStyle == '#008000'){
+						line.color = '#0000FF'; //cor azul
+					}
+					else{
+						line.color = '#008000' //cor verde
+					}
+					ctx.strokeStyle = line.color;
+					ctx.stroke(line.path);
+
+					selected = 1;
+					selected_line = line;
+
 				}
-				else{
-					ctx.strokeStyle = "green";
-				}
-				ctx.stroke();
-				selected = 1;				
 			}
+			
 		}
 
 		function draw(){
 			ctx.clearRect(0,0,canvas.width, canvas.height);
-			ctx.beginPath(); //resseta o caminho salvo em ctx
-			ctx.moveTo(line_0.ini.x,line_0.ini.y);
-			ctx.lineTo(line_0.end.x,line_0.end.y);
-			ctx.stroke();
 
-		}
-
-		function drag_line(event){
-			if(selected){
-				event.preventDefault();
-				event.stopPropagation();
-				
-				getPosition(event);
-				var dx = mouse_coord.x - mouse_start.x;
-				var dy = mouse_coord.y - mouse_start.y;
-
-				mouse_start.x = mouse_coord.x;
-				mouse_start.y = mouse_coord.y;
-
-				// alert(event.offsetX);	
-				line_0.ini.x += dx;
-				line_0.ini.y += dy;
-
-				line_0.end.x += dx;
-				line_0.end.y += dy;
-
-
-				draw();
-
+			for (line of lines){
+				ctx.beginPath(); //resseta o caminho salvo em ctx
+				ctx.strokeStyle = line.color;
+				ctx.stroke(line.path);
 			}
+
 		}
 
 		function unselect(event){
@@ -133,43 +130,47 @@
 			if(selected){
 				getPosition(event);
 
-				//checar qual ponto esta mais perto
+				//checar qual ponto da reta esta mais perto
 				//distancia ponto inicial ao ponto do clique
-				var dist_a = distance(line_0.ini, mouse_coord); 
+				var dist_a = distance(selected_line.ini, mouse_coord); 
 
 				//distancia ponto inicial ao ponto do clique
-				var dist_b = distance(line_0.end, mouse_coord);
+				var dist_b = distance(selected_line.end, mouse_coord);
 
-				var m_point = new coord( (line_0.ini.x + line_0.end.x)/2, (line_0.ini.y + line_0.end.y)/2 )
+				var m_point = new coord( (selected_line.ini.x + selected_line.end.x)/2, (selected_line.ini.y + selected_line.end.y)/2 )
 				//distancia ponto inicial ao ponto do clique
 				var dist_m = distance(m_point, mouse_coord);
 
 
-				//clique proximo ao inicio da reta
+				//clique proximo ao inicio da reta 
 				if(dist_a < dist_b & dist_a < dist_m){
-					line_0.ini.x = mouse_coord.x;
-					line_0.ini.y = mouse_coord.y;				
+					selected_line.ini.x = mouse_coord.x;
+					selected_line.ini.y = mouse_coord.y;
+
+					selected_line.create_path();				
 					draw();
 				}
 
-				// clique proximo ao fim da reta
+				// clique proximo ao fim da reta - altera ponto da reta
 				else if(dist_b < dist_a & dist_b < dist_m){
-					line_0.end.x = mouse_coord.x;
-					line_0.end.y = mouse_coord.y;				
+					selected_line.end.x = mouse_coord.x;
+					selected_line.end.y = mouse_coord.y;
+
+					selected_line.create_path();				
 					draw();
 				}
 
-				// clique no meio da reta
+				// clique no meio da reta - arrasta linha inteira
 				else if(dist_m < dist_a & dist_m < dist_b){
 
 					
 					//salva "distancia" ponto medio com relacao aos outros pontos
-					var x_dist_ini = m_point.x - line_0.ini.x;
-					var y_dist_ini = m_point.y - line_0.ini.y;
+					var x_dist_ini = m_point.x - selected_line.ini.x;
+					var y_dist_ini = m_point.y - selected_line.ini.y;
 
 
-					var x_dist_end = line_0.end.x - m_point.x;
-					var y_dist_end = line_0.end.y - m_point.y;
+					var x_dist_end = selected_line.end.x - m_point.x;
+					var y_dist_end = selected_line.end.y - m_point.y;
 
 					//atualiza ponto medio da reta
 					m_point.x = mouse_coord.x;
@@ -180,13 +181,13 @@
 					mouse_start.y = mouse_coord.y;
 
 					//atualiza posição da reta
-					line_0.ini.x = m_point.x - x_dist_ini;
-					line_0.ini.y = m_point.y - y_dist_ini;
+					selected_line.ini.x = m_point.x - x_dist_ini;
+					selected_line.ini.y = m_point.y - y_dist_ini;
 
-					line_0.end.x = m_point.x + x_dist_end;
-					line_0.end.y = m_point.y + y_dist_end;
+					selected_line.end.x = m_point.x + x_dist_end;
+					selected_line.end.y = m_point.y + y_dist_end;
 
-
+					selected_line.create_path();				
 					draw();
 
 
