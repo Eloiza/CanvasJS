@@ -61,6 +61,9 @@
 
 		draw();
 
+		var splitted_lines = [];
+		var making_edge = 0;
+
 		//inicializa coordenadas do mouse
 		var mouse_coord = new Coord(0,0);
 		var mouse_start = new Coord(0,0);
@@ -74,7 +77,7 @@
 			canvas.addEventListener("mousedown", select);
 			canvas.addEventListener("mouseup", unselect);
 			canvas.addEventListener("mousemove", move_line);
-			// canvas.addEventListener("contextmenu", split_line);
+			canvas.addEventListener("contextmenu", split_line);
 		});
 
 		//atualiza posicao do ponteiro do mouse
@@ -106,6 +109,39 @@
 			
 		}
 
+		function split_line(event){
+			event.preventDefault();	//faz o menu de opcoes sumir
+			getPosition(event);
+			for (line of lines){
+				if(ctx.isPointInStroke(line.path, mouse_coord.x, mouse_coord.y)){
+					line_to_split = line;
+				}
+			}
+
+			var ini = new Coord(line_to_split.end.x, line_to_split.end.y);
+			var end = new Coord(mouse_coord.x, mouse_coord.y);
+
+			var new_line = new Line(ini, end, 0, 0);
+			new_line.color = '#ff0000';
+			new_line.create_path();
+
+			lines.push(new_line);
+
+			//alterando linha para ser ponto inicio - ponto clique
+			line_to_split.end.x = mouse_coord.x;
+			line_to_split.end.y = mouse_coord.y;
+			line_to_split.color = '#f7ff00';
+			line_to_split.create_path();
+			draw();
+
+			splitted_lines = [];
+			splitted_lines.push(line_to_split);
+			splitted_lines.push(new_line);
+
+			
+			making_edge = 1;
+		}
+
 		function draw(){
 			ctx.clearRect(0,0,canvas.width, canvas.height);
 
@@ -125,7 +161,7 @@
 					selected = 0;
 					break;
 
-				case 1:
+				case 2:
 					making_edge = 0;
 					break;
 			}
@@ -212,49 +248,40 @@
 				}
 
 				//botao direito pressionado
-				else if(pressed_button == 1){
+				else if(pressed_button == 2){
 
-					//cria nova aresta/linha
-					if(making_edge == 0){
-						making_edge = 1;
-						//criando linha ponto clique - fim linha selecionada
-						var ini = new Coord(mouse_coord.x, mouse_coord.y);
-						var end = new Coord(selected_line.end.x, selected_line.end.y);
+					if(making_edge){
+						splitted_lines[0].end.x = mouse_coord.x;
+						splitted_lines[0].end.y = mouse_coord.y;
+						splitted_lines[0].create_path();
 
-						var new_line = new Line(ini, end, 0, 0);
-						new_line.color = '#ff0000';
-						new_line.create_path();
 
-						lines.push(new_line);
-
-						//alterando linha para ser ponto inicio - ponto clique
-						selected_line.end.x = mouse_coord.x;
-						selected_line.end.y = mouse_coord.y;
-						selected_line.color = '#f7ff00';
-						selected_line.create_path();
+						splitted_lines[1].end.x = mouse_coord.x;
+						splitted_lines[1].end.y = mouse_coord.y;
+						splitted_lines[1].create_path();
 						draw();
+
 					}
 
 					//altera nova aresta/linha
-					else{
-						new_line.ini.x = mouse_coord.x;
-						new_line.ini.y = mouse_coord.y;
-						new_line.color = '#ff0000';
-						new_line.create_path();
-						// draw();
+					// new_line.ini.x = mouse_coord.x;
+					// new_line.ini.y = mouse_coord.y;
+					// new_line.color = '#ff0000';
+					// new_line.create_path();
+					// // draw();
 
-						selected_line.end.x = mouse_coord.x;
-						selected_line.end.y = mouse_coord.y;
-						selected_line.color = '#f7ff00';
-						selected_line.create_path();
+					// selected_line.end.x = mouse_coord.x;
+					// selected_line.end.y = mouse_coord.y;
+					// selected_line.color = '#f7ff00';
+					// selected_line.create_path();
 
-						draw();
-					}
-
+					
 				}
 
 
-			}
+
+			}//end ifao
+	
 		}
 	</script>
 
