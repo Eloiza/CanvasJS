@@ -6,21 +6,79 @@
 	<meta charset="utf-8">
 
 	<!--Arquivo de estilhos css-->
-	<link rel="stylesheet" type="text/css" href="estilo.css">
+	<link rel="stylesheet" type="text/css" href="./CSS/estilo.css">
+
+
+	<!-- importando bootstrap -->
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- Dependencias bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">  
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet"> 
+
 </head>
 
 <body>
-	<h1>Programação WEB - Trabalho 3</h1>
-	<h2>Eloiza Rossetto dos Santos - GRR20173522</h2>
-	<p><b>Descrição:</b> Ao selecionar um Poligono com o menu ao lado, este será gerado na moldura abaixo. Ao clicar com o botão esquerdo do mouse é possível mover os segmentos de reta do poligono ou escolher um novo ponto de inicio ou fim do segmento. Ao clicar com o botão do mouse direito um segmento de reta é dividido em dois, as operções descritas anteriormente se aplicam também a estas novas retas </p>
+
+	<header>
+		<div class= "container-fluid bg-green text-center">
+			<h1>Programação WEB - Trabalho 3</h1>
+			<h2>Eloiza Rossetto dos Santos - GRR20173522</h2>
+		</div>
+
+	</header>
+
+	<main>
+		<div class="container-fluid bg-white text-center">
+			<h3>Descrição</h3> 
+
+			<p>Ao selecionar um Poligono com o menu ao lado, este será gerado na moldura abaixo. Ao clicar com o botão esquerdo do mouse é possível mover os segmentos de reta do poligono ou escolher um novo ponto de inicio ou fim do segmento. Ao clicar com o botão do mouse direito um segmento de reta é dividido em dois, as operções descritas anteriormente se aplicam também a estas novas retas </p>
+		</div>
+
+ 	</main>
 
 
-	<canvas id="myCanvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
-	<input type="button" style="z-index:2; position:absolute; top:x; left:y" value="test"/>
-	<input type="button" style="z-index:2; position:absolute; top:x; left:y" value="test"/>
+	<div class="dropdown">
+	  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	    Polígonos
+	  </button>
 
+
+	  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+	    <button class="dropdown-item" type="button" onclick="draw_polygon(3);">Triângulo</button>
+
+	    
+	    <button class="dropdown-item" type="button" onclick="draw_polygon(4);">Quadrado</button>
+	    <button class="dropdown-item" type="button" onclick="draw_polygon(5);">Pentágono</button>
+	    <button class="dropdown-item" type="button" onclick="draw_polygon(6);">Hexágono</button>
+	    <button class="dropdown-item" type="button" onclick="draw_polygon(7);"> Heptágono</button>
+	    <button class="dropdown-item" type="button" onclick="draw_polygon(8);">Octógono</button>
+
+	  </div>
+	</div>
+
+ 	<div class= "container-fluid bg-white text-center">
+		<canvas id="myCanvas" width="800" height="400" style="border:1px solid #000000;"></canvas>
+	</div>
+
+	<!-- Importa biblioteca com as funções do canvas -->
 	<script src="./JavaScript/lib_canvas.js">
 	</script>
+
+	<!-- Importa biblioteca com funções da página -->
+	<script src="./JavaScript/index.js">
+	</script>
+
+<!-- 	<input type="button" style="z-index:2; position:absolute; top:x; left:y" 
+value="Polígonos"/>
+ -->
+
 
 </body>
 </html>
