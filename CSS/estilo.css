@@ -41,9 +41,25 @@ p {
 
 }
 
-.dropdown {
-	padding-left: 50px;
+#dropdownMenu {
+	background-color: #474e5d;
+    color:#ffffff;
+	/*padding-left: 80px;*/
 }
+
+#container-botao{
+  font-family: 'Montserrat', sans-serif;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#container-canvas{
+  font-family: 'Montserrat', sans-serif;
+  padding-top: 10px;
+  padding-bottom: 60px;
+}
+
+
 /*
 .margin {
   margin-left: 160px;
