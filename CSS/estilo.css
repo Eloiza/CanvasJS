@@ -60,18 +60,10 @@ p {
 }
 
 
-/*
-.margin {
-  margin-left: 160px;
-  margin-bottom: 45px;
-  padding:0px 10px;
-}*/
-
 .container-fluid{
   font-family: 'Montserrat', sans-serif;
   padding-top: 60px;
   padding-bottom: 60px;
-  /*margin-left: 300px;*/
 }
 
 .container{

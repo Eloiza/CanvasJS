@@ -65,6 +65,7 @@ function getPosition(event){
 }
 
 function draw_polygon(numberOfSides){
+	ctx.colorStroke = 'green'
 	lines = [];
 
 	var radius=100;
@@ -74,7 +75,7 @@ function draw_polygon(numberOfSides){
 
 	for (var i = 1; i <= numberOfSides; i ++) {
 
-		lines.push( new Line( new Coord( x + radius* Math.cos( (i-1) * angle),  y + radius*Math.sin( (i-1)*angle) ), new Coord( x + radius* Math.cos( (i) * angle),  y + radius*Math.sin( (i)*angle) )) );
+		lines.push( new Line( new Coord( x + radius* Math.cos( (i-1) * angle),  y + radius*Math.sin( (i-1)*angle) ), new Coord( x + radius* Math.cos( (i) * angle),  y + radius*Math.sin( (i)*angle) ), 0, 'green') );
 
 	}
 
@@ -92,14 +93,6 @@ function select(event){
 	getPosition(event);
 	for (line of lines){
 		if(ctx.isPointInStroke(line.path, mouse_coord.x, mouse_coord.y)){
-			if(ctx.strokeStyle == '#008000'){
-				line.color = '#0000FF'; //cor azul
-			}
-			else{
-				line.color = '#008000' //cor verde
-			}
-			ctx.strokeStyle = line.color;
-			ctx.stroke(line.path);
 
 			selected = 1;
 			selected_line = line;
@@ -164,12 +157,17 @@ function unselect(event){
 		//botão da esquerda
 		case 0:
 			selected = 0;
+			selected_line.color = '#008000'; //retorna com a cor verde
 			break;
 
 		case 2:
 			making_edge = 0;
+			splitted_lines[0].color = '#008000';
+			splitted_lines[1].color = '#008000';
 			break;
 	}
+
+	ctx.colorStroke = '#008000';
 	// alert("No unselect");
 }
 
@@ -188,6 +186,8 @@ function move_line(event){
 
 		//botao esquerdo pressionado
 		if(pressed_button == 0){
+			selected_line.color = '#0000FF';
+
 			// distancia ponto inicial ao ponto do clique
 			var dist_a = distance(selected_line.ini, mouse_coord); 
 
@@ -268,6 +268,6 @@ function move_line(event){
 			
 		}
 
-	}//end ifao
+	}
 
 }
