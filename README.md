@@ -9,4 +9,4 @@ Este trabalho foi desenvolvido para a disciplina de Programação WEB com foco e
 3) O aplicativo deve solicitar um número (entre 3 e 8) e gerar um polígono com aquele número de lados. A cada segmento de reta, as duas ações descritas acima devem operar. Por exemplo, é possível tranformar um triângulo em quadrado ao pressionar com o botão da direita em uma das retas do triângulo.
 
 ## Executando o código
-Para executar o código basta abrir qualquer arquivo de extensão `.html` em seu browser de preferência. O resultado final implementado aqui também pode ser visto ao [clicar aqui] (http://www.inf.ufpr.br/ers17/TrabalhoWEB-JS/canvas.html)
+Para executar o código basta abrir qualquer arquivo de extensão `.html` em seu browser de preferência. O resultado final implementado aqui também pode ser visto ao [clicar aqui](http://www.inf.ufpr.br/ers17/TrabalhoWEB-JS/canvas.html)
